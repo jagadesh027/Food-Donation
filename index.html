@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Donation System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background-color: #4CAF50;
+            color: white;
+        }
+        header .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        nav ul {
+            list-style: none;
+            display: flex;
+            margin: 0;
+            padding: 0;
+        }
+        nav ul li {
+            margin-left: 20px;
+        }
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .menu-toggle {
+            display: none;
+        }
+        .hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), 
+                        url('../static/img/bg.jpg') no-repeat center center/cover;
+            height: 600px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: rgb(255, 255, 255);
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            margin: 0;
+        }
+        .hero p {
+            font-size: 24px;
+            margin: 20px 0;
+        }
+        .hero .cta-button {
+            background-color: #FF5722;
+            color: white;
+            padding: 15px 30px;
+            text-decoration: none;
+            font-size: 18px;
+            border-radius: 5px;
+        }
+        .features {
+            display: flex;
+            justify-content: space-around;
+            padding: 50px 20px;
+            background-color: #f9f9f9;
+        }
+        .features .card {
+            background-color: #4CAF50;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 30%;
+        }
+        .features .card h3 {
+            margin-top: 0;
+        }
+        footer {
+            background-color: #333;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        footer a {
+            color: #FF5722;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+        footer .social-icons a {
+            margin: 0 10px;
+        }
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: block;
+                cursor: pointer;
+            }
+            nav ul {
+                display: none;
+                flex-direction: column;
+                background-color: #4CAF50;
+                position: absolute;
+                top: 60px;
+                right: 20px;
+                width: 200px;
+                border-radius: 5px;
+            }
+            nav ul.show {
+                display: flex;
+            }
+            nav ul li {
+                margin: 10px 0;
+            }
+            .features {
+                flex-direction: column;
+                align-items: center;
+            }
+            .features .card {
+                width: 80%;
+                margin-bottom: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">Food Donation System</div>
+        <nav>
+            <div class="menu-toggle"><i class="fas fa-bars"></i></div>
+            <ul>
+                <li><a th:href="@{/}">Home</a></li>
+                <li><a th:href="@{/about}">About</a></li>
+                <li><a th:href="@{/contact}">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+    <section class="hero">
+        <h1>Welcome to the Food Donation System</h1>
+        <p>Share Food, Save Lives</p>
+        <a th:href="@{/login}" class="cta-button">Get Started</a>
+    </section>
+    <section class="features">
+        <div class="card">
+            <h3>Easy to Donate</h3>
+            <p>Quick and simple process to donate food to those in need.</p>
+        </div>
+        <div class="card">
+            <h3>Secure Login</h3>
+            <p>Ensure your data is safe with our secure login system.</p>
+        </div>
+        <div class="card">
+            <h3>Find Food Nearby</h3>
+            <p>Locate food donation centers and recipients near you.</p>
+        </div>
+    </section>
+    <footer>
+        <p><a th:href="@{/privacy-policy}">Privacy Policy</a> | <a th:href="@{/terms-of-service}">Terms of Service</a></p>
+        <div class="social-icons">
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="https://www.instagram.com/jagadesh_027/"><i class="fab fa-instagram"></i></a>
+        </div>
+    </footer>
+    <script>
+        document.querySelector('.menu-toggle').addEventListener('click', () => {
+            document.querySelector('nav ul').classList.toggle('show');
+        });
+    </script>
+</body>
+</html>

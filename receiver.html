@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Donations</title>
+    <style>
+        /* Global Styling */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+        }
+
+        h1 {
+            text-align: center;
+            margin: 20px 0;
+            color: #333;
+        }
+
+        /* Search Bar */
+        .search-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .search-container input {
+            padding: 10px;
+            width: 300px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+
+        .search-container button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .search-container button:hover {
+            background-color: #45a049;
+        }
+
+        /* Card Container */
+        .card-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .card {
+            background-color: white;
+            width: 300px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .card h3 {
+            color: #4CAF50;
+            margin: 0 0 10px;
+        }
+
+        .card p {
+            margin: 5px 0;
+            color: #555;
+        }
+
+        .card button {
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .card button:hover {
+            background-color: #45a049;
+        }
+
+        /* Popup and Overlay Styling */
+        #popupOverlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            z-index: 2000;
+            width: 300px;
+            text-align: center;
+        }
+
+        .popup input, .popup button, .popup label {
+            display: block;
+            margin: 10px auto;
+            width: calc(100% - 40px);
+        }
+
+        .popup input {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .popup button {
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .popup button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h1>Available Food Donations</h1>
+
+    <!-- Search Container -->
+    <div class="search-container">
+        <input type="text" id="searchInput" placeholder="Search by city...">
+        <button onclick="searchByCity()">Search</button>
+    </div>
+
+    <!-- Cards Display -->
+    <div class="card-container" id="foodCards">
+        <div class="card" th:each="donor : ${donors}" th:attr="data-city=${donor.city}">
+            <h3 th:text="${donor.foodCategory}"></h3>
+            <p><strong>Description:</strong> <span th:text="${donor.foodDesc}"></span></p>
+            <p><strong>Quantity:</strong> <span th:text="${donor.quantity}"></span></p>
+            <p><strong>Pickup Address:</strong> <span th:text="${donor.address}"></span></p>
+            <p><strong>City:</strong> <span th:text="${donor.city}"></span></p>
+            <button class="book-button" th:attr="data-donor-id=${donor.id}">Book</button>
+        </div>
+    </div>
+
+    <!-- Booking Popup -->
+    <div id="popupOverlay"></div>
+    <div id="bookingPopup" class="popup">
+        <form th:action="@{/book}" method="post">
+            <input type="hidden" id="donorIdInput" name="donorId">
+            <label for="name">Your Name:</label>
+            <input type="text" name="name" id="name" required>
+            <label for="pickupTime">Pickup Time:</label>
+            <input type="text" name="pickupTime" id="pickupTime" required>
+            <button type="submit">Confirm Booking</button>
+        </form>
+        <button id="closePopup">Close</button>
+    </div>
+
+    <!-- Success Popup -->
+    <div id="successPopup" class="popup">
+        <p id="successMessage">Booking successful! Go and pick up the food at the address provided.</p>
+        <button id="closeSuccessPopup">Close</button>
+    </div>
+
+    <script>
+        // Search Functionality
+        function searchByCity() {
+            const searchInput = document.getElementById('searchInput').value.toLowerCase();
+            const cards = document.querySelectorAll('.card');
+
+            cards.forEach(card => {
+                const city = card.getAttribute('data-city').toLowerCase();
+                if (city.includes(searchInput)) {
+                    card.style.display = "block";
+                } else {
+                    card.style.display = "none";
+                }
+            });
+        }
+
+        // Booking Popup Logic
+        document.addEventListener("DOMContentLoaded", () => {
+            document.querySelectorAll(".book-button").forEach(button => {
+                button.addEventListener("click", (event) => {
+                    const donorId = event.target.getAttribute("data-donor-id");
+                    document.getElementById("donorIdInput").value = donorId;
+                    document.getElementById("bookingPopup").style.display = "block";
+                    document.getElementById("popupOverlay").style.display = "block";
+                });
+            });
+
+            document.getElementById("closePopup").addEventListener("click", () => {
+                document.getElementById("bookingPopup").style.display = "none";
+                document.getElementById("popupOverlay").style.display = "none";
+            });
+
+            // Success Popup Logic
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.has("success")) {
+                const address = urlParams.get("address");
+                const successMessage = document.getElementById("successMessage");
+                successMessage.textContent = `Booking successful! Go and pick up the food at: ${address} in the specified pickup time`;
+                document.getElementById("successPopup").style.display = "block";
+                document.getElementById("popupOverlay").style.display = "block";
+            }
+
+            document.getElementById("closeSuccessPopup").addEventListener("click", () => {
+                document.getElementById("successPopup").style.display = "none";
+                document.getElementById("popupOverlay").style.display = "none";
+            });
+        });
+    </script>
+</body>
+</html>

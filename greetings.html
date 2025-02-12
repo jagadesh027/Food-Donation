@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thank You for Your Generous Donation!</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f9f9f9;
+            text-align: center;
+        }
+        .thank-you-container {
+            background-color: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 80%;
+            max-width: 800px;
+        }
+        .thank-you-container h1 {
+            margin-bottom: 20px;
+            font-size: 32px;
+            color: #333;
+        }
+        .thank-you-container p {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 20px;
+        }
+        .thank-you-container .cta-button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .thank-you-container .cta-button:hover {
+            background-color: #45a049;
+        }
+        .thank-you-container .impact-message {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #333;
+        }
+        footer {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #666;
+        }
+        footer .social-icons a {
+            margin: 0 10px;
+            color: #4CAF50;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="thank-you-container">
+        <h1>Thank You for Your Generous Donation!</h1>
+        <p>Your contribution makes a difference in the lives of many. We appreciate your support!</p>
+        <p>Thank you, <span th:text="${donorName}">[Donor Name]</span>, for your kindness!</p>
+        <p>Your donation of <span th:text="${quantity}">[quantity]</span> <span th:text="${foodCategory}">[food category]</span> has been successfully recorded. We will make sure it reaches those in need.</p>
+        <div class="impact-message">
+            <p>Together, we are reducing food waste and helping those who need it most. Thank you for being part of this positive change!</p>
+        </div>
+        <a href="/" class="cta-button">Back to Homepage</a>
+        <a href="/donor" class="cta-button">Make Another Donation</a>
+    </div>
+    <footer>
+        <p>Contact us at support@fooddonationsystem.com</p>
+        <div class="social-icons">
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+        </div>
+    </footer>
+</body>
+</html>
